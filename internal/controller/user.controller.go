@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"shoppe_be/internal/services"
+	"github.com/ducnv194023/shoppe_be_go/internal/services"
 	"github.com/gin-gonic/gin"
-	response "shoppe_be/pkg/response"
+	response "github.com/ducnv194023/shoppe_be_go/pkg/response"
 )
 
 type UserController struct {

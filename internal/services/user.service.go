@@ -1,7 +1,7 @@
 package services
 
 import (
-	"shoppe_be/internal/repo"
+	"github.com/ducnv194023/shoppe_be_go/internal/repo"
 )
 type UserService struct {
 	userRepo *repo.UserRepo

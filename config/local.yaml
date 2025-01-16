@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  mode: "dev"
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: root1234
+  dbname: shoppe_go
+  maxIdleConns: 10
+  maxOpenConns: 100
+  connMaxLifetime: 3600
+logger:
+  level: debug
+  filename: ./storages/logs/dev_001.txt
+  maxSize: 1024
+  maxBackups: 3
+  maxAge: 7
+  compress: true
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  db: 0
+  poolSize: 10

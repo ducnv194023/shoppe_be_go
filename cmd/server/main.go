@@ -1,10 +1,9 @@
 package main
 
 import (
-	"shoppe_be/internal/routers"
+	"github.com/ducnv194023/shoppe_be_go/initialize"
 )
 func main() {
-	r:= routers.NewRouter()
-	r.Run(":8080")
+	initialize.Run()
 }
 
