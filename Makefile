@@ -1,4 +1,6 @@
 # Variables
+include .env
+
 APP_NAME=shoppe_be_go
 DOCKER_COMPOSE=docker-compose.yml
 
@@ -83,3 +85,25 @@ help:
 
 # Default target
 all: clean build
+
+# Database migrations
+migrate-up:
+	@echo "Running migrations up..."
+	@goose -v -dir internal/migrations mysql "$(DB_URL)" up
+
+migrate-down:
+	@echo "Running migrations down..."
+	@goose -dir internal/migrations mysql "$(DB_URL)" down
+
+migrate-status:
+	@echo "Checking migration status..."
+	@goose -dir internal/migrations mysql "$(DB_URL)" status
+
+migrate-create:
+	@read -p "Enter migration name: " name; \
+	goose -dir internal/migrations create $$name sql
+
+# SQLC commands
+sqlc-gen:
+	@echo "Generating SQLC code..."
+	@sqlc generate

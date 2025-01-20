@@ -48,3 +48,6 @@
 {"level":"INFO","time":"2025-01-20T15:33:39.133+0700","caller":"initialize/mysql.go:30","msg":"Connected to database!"}
 {"level":"INFO","time":"2025-01-20T15:33:39.226+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
 {"level":"INFO","time":"2025-01-20T15:33:39.229+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
+{"level":"INFO","time":"2025-01-20T16:32:27.983+0700","caller":"initialize/mysql.go:30","msg":"Connected to database!"}
+{"level":"INFO","time":"2025-01-20T16:32:28.084+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
+{"level":"INFO","time":"2025-01-20T16:32:28.085+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
