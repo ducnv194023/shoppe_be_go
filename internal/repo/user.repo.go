@@ -1,11 +1,18 @@
 package repo
 
-type UserRepo struct {}
-
-func NewUserRepo() *UserRepo {
-	return &UserRepo{}
+type IUserRepo interface {
+	Register(email string, password string) int
 }
 
-func (ur *UserRepo) GetUserById() string {
-	return "user"
+// khai báo
+type UserRepo struct {}
+
+
+func (ur *UserRepo) Register(email string, password string) int {
+	return 1
+}
+
+// khởi tạo
+func NewUserRepo() IUserRepo {
+	return &UserRepo{}
 }

@@ -44,3 +44,7 @@
 {"level":"INFO","time":"2025-01-09T14:32:25.542+0700","caller":"initialize/mysql.go:30","msg":"Connected to database!"}
 {"level":"INFO","time":"2025-01-09T14:32:25.622+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
 {"level":"INFO","time":"2025-01-09T14:32:25.622+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
+{"level":"ERROR","time":"2025-01-20T15:31:14.723+0700","caller":"initialize/mysql.go:15","msg":"Failed to connect to database","error":"dial tcp 127.0.0.1:3306: connect: connection refused","stacktrace":"github.com/ducnv194023/shoppe_be_go/initialize.checkErrorPanic\n\t/Users/duc/shoppe_be_go/initialize/mysql.go:15\ngithub.com/ducnv194023/shoppe_be_go/initialize.InitMysql\n\t/Users/duc/shoppe_be_go/initialize/mysql.go:29\ngithub.com/ducnv194023/shoppe_be_go/initialize.Run\n\t/Users/duc/shoppe_be_go/initialize/run.go:7\nmain.main\n\t/Users/duc/shoppe_be_go/cmd/server/main.go:7\nruntime.main\n\t/opt/homebrew/Cellar/go/1.23.4/libexec/src/runtime/proc.go:272"}
+{"level":"INFO","time":"2025-01-20T15:33:39.133+0700","caller":"initialize/mysql.go:30","msg":"Connected to database!"}
+{"level":"INFO","time":"2025-01-20T15:33:39.226+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
+{"level":"INFO","time":"2025-01-20T15:33:39.229+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
