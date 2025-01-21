@@ -5,7 +5,6 @@ import (
 )
 
 type IUserService interface {
-	Register(email string, password string) int
 }
 
 type UserService struct {
@@ -20,8 +19,4 @@ func NewUserService(
 	}
 }
 
-// Register implements IUserService.
-func (us *UserService) Register(email string, password string) int {
-	return us.userRepo.Register(email, password)
-}
 

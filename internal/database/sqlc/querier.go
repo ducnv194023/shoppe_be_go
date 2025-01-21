@@ -10,14 +10,56 @@ import (
 )
 
 type Querier interface {
-	CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error)
-	DeleteUser(ctx context.Context, id int64) error
-	GetUser(ctx context.Context, id int64) (User, error)
-	GetUserByEmail(ctx context.Context, email string) (User, error)
-	GetUserByUsername(ctx context.Context, username string) (User, error)
-	ListUsers(ctx context.Context) ([]User, error)
-	ListUsersByCreatedAt(ctx context.Context, createdAt sql.NullTime) ([]User, error)
-	UpdateUser(ctx context.Context, arg UpdateUserParams) error
+	CountActiveTokens(ctx context.Context, arg CountActiveTokensParams) (int64, error)
+	CountRecentOTPs(ctx context.Context, arg CountRecentOTPsParams) (int64, error)
+	CreateOTP(ctx context.Context, arg CreateOTPParams) (sql.Result, error)
+	CreateToken(ctx context.Context, arg CreateTokenParams) (sql.Result, error)
+	CreateUserAddress(ctx context.Context, arg CreateUserAddressParams) (sql.Result, error)
+	CreateUserBasic(ctx context.Context, arg CreateUserBasicParams) (sql.Result, error)
+	CreateUserPaymentMethod(ctx context.Context, arg CreateUserPaymentMethodParams) (sql.Result, error)
+	CreateUserProfile(ctx context.Context, arg CreateUserProfileParams) (sql.Result, error)
+	DeleteExpiredOTPs(ctx context.Context) error
+	DeleteExpiredTokens(ctx context.Context) error
+	DeleteOTP(ctx context.Context, id int64) error
+	DeleteToken(ctx context.Context, id int64) error
+	DeleteUserAddress(ctx context.Context, id int64) error
+	DeleteUserBasic(ctx context.Context, id int64) error
+	DeleteUserPaymentMethod(ctx context.Context, id int64) error
+	DeleteUserProfile(ctx context.Context, userID int64) error
+	GetDefaultUserAddress(ctx context.Context, userID int64) (UserAddress, error)
+	GetDefaultUserPaymentMethod(ctx context.Context, userID int64) (UserPaymentMethod, error)
+	GetLatestOTP(ctx context.Context, arg GetLatestOTPParams) (UserOtp, error)
+	GetOTPByID(ctx context.Context, id int64) (UserOtp, error)
+	GetOTPByUUID(ctx context.Context, uuid string) (UserOtp, error)
+	GetTokenByID(ctx context.Context, id int64) (UserToken, error)
+	GetTokenByToken(ctx context.Context, token string) (UserToken, error)
+	GetTokenByUUID(ctx context.Context, uuid string) (UserToken, error)
+	GetUserAddressByID(ctx context.Context, id int64) (UserAddress, error)
+	GetUserAddressByUUID(ctx context.Context, uuid string) (UserAddress, error)
+	GetUserBasicByEmail(ctx context.Context, email string) (UserBasic, error)
+	GetUserBasicByID(ctx context.Context, id int64) (UserBasic, error)
+	GetUserBasicByPhone(ctx context.Context, phone sql.NullString) (UserBasic, error)
+	GetUserBasicByUUID(ctx context.Context, uuid string) (UserBasic, error)
+	GetUserPaymentMethodByID(ctx context.Context, id int64) (UserPaymentMethod, error)
+	GetUserProfileByUUID(ctx context.Context, uuid string) (UserProfile, error)
+	GetUserProfileByUserID(ctx context.Context, userID int64) (UserProfile, error)
+	GetValidOTP(ctx context.Context, arg GetValidOTPParams) (UserOtp, error)
+	IncrementOTPAttempt(ctx context.Context, id int64) error
+	InvalidateOldOTPs(ctx context.Context, arg InvalidateOldOTPsParams) error
+	ListUserAddresses(ctx context.Context, userID int64) ([]UserAddress, error)
+	ListUserBasics(ctx context.Context, arg ListUserBasicsParams) ([]UserBasic, error)
+	ListUserPaymentMethods(ctx context.Context, userID int64) ([]UserPaymentMethod, error)
+	ListUserTokens(ctx context.Context, arg ListUserTokensParams) ([]UserToken, error)
+	MarkOTPAsUsed(ctx context.Context, id int64) error
+	RevokeAllUserTokens(ctx context.Context, arg RevokeAllUserTokensParams) error
+	RevokeToken(ctx context.Context, token string) error
+	UpdateUserAddress(ctx context.Context, arg UpdateUserAddressParams) error
+	UpdateUserBasic(ctx context.Context, arg UpdateUserBasicParams) error
+	UpdateUserPaymentMethod(ctx context.Context, arg UpdateUserPaymentMethodParams) error
+	UpdateUserProfile(ctx context.Context, arg UpdateUserProfileParams) error
+	ValidateToken(ctx context.Context, arg ValidateTokenParams) (UserToken, error)
+	VerifyUserEmail(ctx context.Context, id int64) error
+	VerifyUserPhone(ctx context.Context, id int64) error
 }
 
 var _ Querier = (*Queries)(nil)

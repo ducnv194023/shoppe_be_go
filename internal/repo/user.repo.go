@@ -1,18 +1,25 @@
 package repo
 
 type IUserRepo interface {
-	Register(email string, password string) int
+	GetUserBasicByEmail()
+	CreateUserBasic()
+	CreateUserProfile()
 }
 
-// khai báo
-type UserRepo struct {}
+type UserRepo struct{}
 
-
-func (ur *UserRepo) Register(email string, password string) int {
-	return 1
+func (ur *UserRepo) CreateUserBasic() {
+	panic("unimplemented")
 }
 
-// khởi tạo
+func (ur *UserRepo) CreateUserProfile() {
+	panic("unimplemented")
+}
+
+func (ur *UserRepo) GetUserBasicByEmail() {
+	panic("unimplemented")
+}
+
 func NewUserRepo() IUserRepo {
 	return &UserRepo{}
 }

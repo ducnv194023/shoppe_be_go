@@ -6,13 +6,407 @@ package database
 
 import (
 	"database/sql"
+	"database/sql/driver"
+	"encoding/json"
+	"fmt"
+	"time"
 )
 
-type User struct {
-	ID           int64        `json:"id"`
-	Username     string       `json:"username"`
-	Email        string       `json:"email"`
-	PasswordHash string       `json:"password_hash"`
-	CreatedAt    sql.NullTime `json:"created_at"`
-	UpdatedAt    sql.NullTime `json:"updated_at"`
+type UserBasicsRole string
+
+const (
+	UserBasicsRoleUser  UserBasicsRole = "user"
+	UserBasicsRoleAdmin UserBasicsRole = "admin"
+)
+
+func (e *UserBasicsRole) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserBasicsRole(s)
+	case string:
+		*e = UserBasicsRole(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserBasicsRole: %T", src)
+	}
+	return nil
+}
+
+type NullUserBasicsRole struct {
+	UserBasicsRole UserBasicsRole `json:"user_basics_role"`
+	Valid          bool           `json:"valid"` // Valid is true if UserBasicsRole is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserBasicsRole) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserBasicsRole, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserBasicsRole.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserBasicsRole) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserBasicsRole), nil
+}
+
+type UserBasicsStatus string
+
+const (
+	UserBasicsStatusActive   UserBasicsStatus = "active"
+	UserBasicsStatusInactive UserBasicsStatus = "inactive"
+)
+
+func (e *UserBasicsStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserBasicsStatus(s)
+	case string:
+		*e = UserBasicsStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserBasicsStatus: %T", src)
+	}
+	return nil
+}
+
+type NullUserBasicsStatus struct {
+	UserBasicsStatus UserBasicsStatus `json:"user_basics_status"`
+	Valid            bool             `json:"valid"` // Valid is true if UserBasicsStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserBasicsStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserBasicsStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserBasicsStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserBasicsStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserBasicsStatus), nil
+}
+
+type UserOtpsOtpType string
+
+const (
+	UserOtpsOtpTypeLogin         UserOtpsOtpType = "login"
+	UserOtpsOtpTypeResetPassword UserOtpsOtpType = "reset_password"
+	UserOtpsOtpTypeVerifyEmail   UserOtpsOtpType = "verify_email"
+	UserOtpsOtpTypeVerifyPhone   UserOtpsOtpType = "verify_phone"
+)
+
+func (e *UserOtpsOtpType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserOtpsOtpType(s)
+	case string:
+		*e = UserOtpsOtpType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserOtpsOtpType: %T", src)
+	}
+	return nil
+}
+
+type NullUserOtpsOtpType struct {
+	UserOtpsOtpType UserOtpsOtpType `json:"user_otps_otp_type"`
+	Valid           bool            `json:"valid"` // Valid is true if UserOtpsOtpType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserOtpsOtpType) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserOtpsOtpType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserOtpsOtpType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserOtpsOtpType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserOtpsOtpType), nil
+}
+
+type UserPaymentMethodsPaymentType string
+
+const (
+	UserPaymentMethodsPaymentTypeBank    UserPaymentMethodsPaymentType = "bank"
+	UserPaymentMethodsPaymentTypeCard    UserPaymentMethodsPaymentType = "card"
+	UserPaymentMethodsPaymentTypeEWallet UserPaymentMethodsPaymentType = "e_wallet"
+)
+
+func (e *UserPaymentMethodsPaymentType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserPaymentMethodsPaymentType(s)
+	case string:
+		*e = UserPaymentMethodsPaymentType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserPaymentMethodsPaymentType: %T", src)
+	}
+	return nil
+}
+
+type NullUserPaymentMethodsPaymentType struct {
+	UserPaymentMethodsPaymentType UserPaymentMethodsPaymentType `json:"user_payment_methods_payment_type"`
+	Valid                         bool                          `json:"valid"` // Valid is true if UserPaymentMethodsPaymentType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserPaymentMethodsPaymentType) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserPaymentMethodsPaymentType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserPaymentMethodsPaymentType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserPaymentMethodsPaymentType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserPaymentMethodsPaymentType), nil
+}
+
+type UserPaymentMethodsStatus string
+
+const (
+	UserPaymentMethodsStatusActive   UserPaymentMethodsStatus = "active"
+	UserPaymentMethodsStatusInactive UserPaymentMethodsStatus = "inactive"
+)
+
+func (e *UserPaymentMethodsStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserPaymentMethodsStatus(s)
+	case string:
+		*e = UserPaymentMethodsStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserPaymentMethodsStatus: %T", src)
+	}
+	return nil
+}
+
+type NullUserPaymentMethodsStatus struct {
+	UserPaymentMethodsStatus UserPaymentMethodsStatus `json:"user_payment_methods_status"`
+	Valid                    bool                     `json:"valid"` // Valid is true if UserPaymentMethodsStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserPaymentMethodsStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserPaymentMethodsStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserPaymentMethodsStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserPaymentMethodsStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserPaymentMethodsStatus), nil
+}
+
+type UserProfilesGender string
+
+const (
+	UserProfilesGenderMale   UserProfilesGender = "male"
+	UserProfilesGenderFemale UserProfilesGender = "female"
+	UserProfilesGenderOther  UserProfilesGender = "other"
+)
+
+func (e *UserProfilesGender) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserProfilesGender(s)
+	case string:
+		*e = UserProfilesGender(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserProfilesGender: %T", src)
+	}
+	return nil
+}
+
+type NullUserProfilesGender struct {
+	UserProfilesGender UserProfilesGender `json:"user_profiles_gender"`
+	Valid              bool               `json:"valid"` // Valid is true if UserProfilesGender is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserProfilesGender) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserProfilesGender, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserProfilesGender.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserProfilesGender) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserProfilesGender), nil
+}
+
+type UserTokensTokenType string
+
+const (
+	UserTokensTokenTypeAccess  UserTokensTokenType = "access"
+	UserTokensTokenTypeRefresh UserTokensTokenType = "refresh"
+)
+
+func (e *UserTokensTokenType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserTokensTokenType(s)
+	case string:
+		*e = UserTokensTokenType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserTokensTokenType: %T", src)
+	}
+	return nil
+}
+
+type NullUserTokensTokenType struct {
+	UserTokensTokenType UserTokensTokenType `json:"user_tokens_token_type"`
+	Valid               bool                `json:"valid"` // Valid is true if UserTokensTokenType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserTokensTokenType) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserTokensTokenType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserTokensTokenType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserTokensTokenType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserTokensTokenType), nil
+}
+
+type UserAddress struct {
+	ID            int64          `json:"id"`
+	UserID        int64          `json:"user_id"`
+	Uuid          string         `json:"uuid"`
+	ReceiverName  string         `json:"receiver_name"`
+	ReceiverPhone string         `json:"receiver_phone"`
+	ProvinceCode  string         `json:"province_code"`
+	DistrictCode  string         `json:"district_code"`
+	WardCode      string         `json:"ward_code"`
+	StreetAddress string         `json:"street_address"`
+	Label         sql.NullString `json:"label"`
+	IsDefault     sql.NullBool   `json:"is_default"`
+	Notes         sql.NullString `json:"notes"`
+	CreatedAt     sql.NullTime   `json:"created_at"`
+	UpdatedAt     sql.NullTime   `json:"updated_at"`
+	DeletedAt     sql.NullTime   `json:"deleted_at"`
+}
+
+type UserBasic struct {
+	ID              int64                `json:"id"`
+	Uuid            string               `json:"uuid"`
+	Email           string               `json:"email"`
+	Phone           sql.NullString       `json:"phone"`
+	PasswordHash    string               `json:"password_hash"`
+	Role            NullUserBasicsRole   `json:"role"`
+	Status          NullUserBasicsStatus `json:"status"`
+	EmailVerifiedAt sql.NullTime         `json:"email_verified_at"`
+	PhoneVerifiedAt sql.NullTime         `json:"phone_verified_at"`
+	CreatedAt       sql.NullTime         `json:"created_at"`
+	UpdatedAt       sql.NullTime         `json:"updated_at"`
+	DeletedAt       sql.NullTime         `json:"deleted_at"`
+}
+
+type UserOtp struct {
+	ID           int64           `json:"id"`
+	Uuid         string          `json:"uuid"`
+	UserID       int64           `json:"user_id"`
+	OtpCode      string          `json:"otp_code"`
+	OtpType      UserOtpsOtpType `json:"otp_type"`
+	Target       string          `json:"target"`
+	AttemptCount sql.NullInt32   `json:"attempt_count"`
+	MaxAttempts  sql.NullInt32   `json:"max_attempts"`
+	IsUsed       sql.NullBool    `json:"is_used"`
+	ExpiresAt    time.Time       `json:"expires_at"`
+	CreatedAt    sql.NullTime    `json:"created_at"`
+	UpdatedAt    sql.NullTime    `json:"updated_at"`
+	DeletedAt    sql.NullTime    `json:"deleted_at"`
+}
+
+type UserPaymentMethod struct {
+	ID          int64                         `json:"id"`
+	UserID      int64                         `json:"user_id"`
+	Uuid        string                        `json:"uuid"`
+	PaymentType UserPaymentMethodsPaymentType `json:"payment_type"`
+	Provider    string                        `json:"provider"`
+	IsDefault   sql.NullBool                  `json:"is_default"`
+	Status      NullUserPaymentMethodsStatus  `json:"status"`
+	CardInfo    json.RawMessage               `json:"card_info"`
+	BankInfo    json.RawMessage               `json:"bank_info"`
+	WalletInfo  json.RawMessage               `json:"wallet_info"`
+	CreatedAt   sql.NullTime                  `json:"created_at"`
+	UpdatedAt   sql.NullTime                  `json:"updated_at"`
+	DeletedAt   sql.NullTime                  `json:"deleted_at"`
+}
+
+type UserProfile struct {
+	ID          int64                  `json:"id"`
+	UserID      int64                  `json:"user_id"`
+	Uuid        string                 `json:"uuid"`
+	FullName    string                 `json:"full_name"`
+	AvatarUrl   sql.NullString         `json:"avatar_url"`
+	Gender      NullUserProfilesGender `json:"gender"`
+	DateOfBirth sql.NullTime           `json:"date_of_birth"`
+	Bio         sql.NullString         `json:"bio"`
+	CountryCode sql.NullString         `json:"country_code"`
+	Language    sql.NullString         `json:"language"`
+	Timezone    sql.NullString         `json:"timezone"`
+	SocialLinks json.RawMessage        `json:"social_links"`
+	Preferences json.RawMessage        `json:"preferences"`
+	Metadata    json.RawMessage        `json:"metadata"`
+	CreatedAt   sql.NullTime           `json:"created_at"`
+	UpdatedAt   sql.NullTime           `json:"updated_at"`
+	DeletedAt   sql.NullTime           `json:"deleted_at"`
+}
+
+type UserToken struct {
+	ID        int64               `json:"id"`
+	Uuid      string              `json:"uuid"`
+	UserID    int64               `json:"user_id"`
+	TokenType UserTokensTokenType `json:"token_type"`
+	Token     string              `json:"token"`
+	ExpiresAt time.Time           `json:"expires_at"`
+	IpAddress sql.NullString      `json:"ip_address"`
+	UserAgent sql.NullString      `json:"user_agent"`
+	IsRevoked sql.NullBool        `json:"is_revoked"`
+	RevokedAt sql.NullTime        `json:"revoked_at"`
+	CreatedAt sql.NullTime        `json:"created_at"`
+	UpdatedAt sql.NullTime        `json:"updated_at"`
+	DeletedAt sql.NullTime        `json:"deleted_at"`
 }
