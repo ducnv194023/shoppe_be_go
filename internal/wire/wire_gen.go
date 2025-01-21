@@ -12,11 +12,13 @@ import (
 	"github.com/ducnv194023/shoppe_be_go/internal/services"
 )
 
-// Injectors from wire.go:
+// Injectors from auth.wire.go:
 
-func InitializeUserHandler() (*controller.UserController, error) {
+func InitializeAuthHandler() (*controller.AuthController, error) {
 	iUserRepo := repo.NewUserRepo()
-	iUserService := services.NewUserService(iUserRepo)
-	userController := controller.NewUserController(iUserService)
-	return userController, nil
+	iotpRepo := repo.NewOTPRepo()
+	iMailService := services.NewMailService()
+	iAuthService := services.NewAuthService(iUserRepo, iotpRepo, iMailService)
+	authController := controller.NewAuthController(iAuthService)
+	return authController, nil
 }
