@@ -1,13 +1,16 @@
 package initialize
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
+	
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/pressly/goose/v3"
 	"go.uber.org/zap"
+	
 	"github.com/ducnv194023/shoppe_be_go/global"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"github.com/ducnv194023/shoppe_be_go/po"
+	"github.com/ducnv194023/shoppe_be_go/internal/database/sqlc"
 )
 
 func checkErrorPanic(err error, errString string) {
@@ -22,37 +25,37 @@ func InitMysql() {
 	dsn := "%s:%s@tcp(%s:%v)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 	var s = fmt.Sprintf(dsn, m.Username, m.Password, m.Host, m.Port, m.Dbname)
 
-	db, err := gorm.Open(mysql.Open(s), &gorm.Config{
-		SkipDefaultTransaction: false,
-	})
-	
+	// Create database connection
+	db, err := sql.Open("mysql", s)
 	checkErrorPanic(err, "Failed to connect to database")
-	global.Logger.Info("Connected to database!")
+
+	// Configure connection pool
+	db.SetMaxIdleConns(m.MaxIdleConns)
+	db.SetMaxOpenConns(m.MaxOpenConns)
+	db.SetConnMaxLifetime(time.Duration(m.ConnMaxLifetime) * time.Second)
+
+	// Run migrations
+	runMigrations(db)
+
+	// Initialize SQLC queries
 	global.MDb = db
-
-	SetPool()
-	migrateTables()
+	global.Queries = database.New(db)
+	
+	global.Logger.Info("Database connection and queries initialized successfully!")
 }
 
-func SetPool() {
-	sqlDB, err := global.MDb.DB()
-
+func runMigrations(db *sql.DB) {
+	err := goose.SetDialect("mysql")
 	if err != nil {
-		global.Logger.Error("Failed to set pool connection", zap.Error(err))
+		global.Logger.Error("Failed to set database dialect", zap.Error(err))
+		panic(err)
 	}
-	sqlDB.SetMaxIdleConns(global.Config.MysqlSetting.MaxIdleConns)
-	sqlDB.SetMaxOpenConns(global.Config.MysqlSetting.MaxOpenConns)
-	sqlDB.SetConnMaxLifetime(time.Duration(global.Config.MysqlSetting.ConnMaxLifetime))
-}
 
-func migrateTables() {
-	err := global.MDb.AutoMigrate(
-		&po.User{}, 
-		&po.Role{},
-	)
-
+	err = goose.Up(db, "internal/migrations")
 	if err != nil {
-		global.Logger.Error("Failed to migrate tables", zap.Error(err))
+		global.Logger.Error("Failed to run migrations", zap.Error(err))
+		panic(err)
 	}
-}
 
+	global.Logger.Info("Database migrations completed successfully!")
+}

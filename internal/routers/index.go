@@ -1,13 +1,11 @@
 package routers
 
 import (
-	user "github.com/ducnv194023/shoppe_be_go/internal/routers/user"
-	manager "github.com/ducnv194023/shoppe_be_go/internal/routers/manager"
+	auth "github.com/ducnv194023/shoppe_be_go/internal/routers/auth"
 )
 
 type RouterGroup struct {
-	User user.UserRouterGroup
-	Manager manager.ManagerRouterGroup
+	Auth auth.AuthRouterGroup
 }
 
 var RouterGroupApp = new(RouterGroup)

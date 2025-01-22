@@ -25,20 +25,14 @@ func InitRouter() *gin.Engine {
 	r.Use()  // cross
 	r.Use() // limit global
 
-	managerRouter := routers.RouterGroupApp.Manager
-	userRouter := routers.RouterGroupApp.User
+	authRouter := routers.RouterGroupApp.Auth
 
 	MainGroup := r.Group("/v1")
 	{
 		MainGroup.GET("/checkStatus")
 	}
 	{
-		userRouter.InitUserRouter(MainGroup)
-		userRouter.InitProductRouter(MainGroup)
-	}
-	{
-		managerRouter.InitAdminRouter(MainGroup)
-		managerRouter.InitUserRouter(MainGroup)
+		authRouter.InitAuthRouter(MainGroup)
 	}
 
 	return r

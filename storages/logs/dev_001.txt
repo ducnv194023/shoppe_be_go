@@ -51,3 +51,14 @@
 {"level":"INFO","time":"2025-01-20T16:32:27.983+0700","caller":"initialize/mysql.go:30","msg":"Connected to database!"}
 {"level":"INFO","time":"2025-01-20T16:32:28.084+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
 {"level":"INFO","time":"2025-01-20T16:32:28.085+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
+{"level":"INFO","time":"2025-01-20T17:13:32.210+0700","caller":"initialize/mysql.go:30","msg":"Connected to database!"}
+{"level":"INFO","time":"2025-01-20T17:13:32.299+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
+{"level":"INFO","time":"2025-01-20T17:13:32.299+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
+{"level":"INFO","time":"2025-01-22T11:54:43.862+0700","caller":"initialize/mysql.go:60","msg":"Database migrations completed successfully!"}
+{"level":"INFO","time":"2025-01-22T11:54:43.863+0700","caller":"initialize/mysql.go:44","msg":"Database connection and queries initialized successfully!"}
+{"level":"INFO","time":"2025-01-22T11:54:43.867+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
+{"level":"INFO","time":"2025-01-22T11:54:43.868+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}
+{"level":"INFO","time":"2025-01-22T11:55:22.804+0700","caller":"initialize/mysql.go:60","msg":"Database migrations completed successfully!"}
+{"level":"INFO","time":"2025-01-22T11:55:22.804+0700","caller":"initialize/mysql.go:44","msg":"Database connection and queries initialized successfully!"}
+{"level":"INFO","time":"2025-01-22T11:55:22.805+0700","caller":"initialize/redis.go:30","msg":"Connected to Redis"}
+{"level":"INFO","time":"2025-01-22T11:55:22.805+0700","caller":"initialize/redis.go:51","msg":"Score","score":"100"}

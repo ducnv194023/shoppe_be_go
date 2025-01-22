@@ -1,11 +1,7 @@
 package response
 
 const (
-	ErrCodeSuccess = 20001
-	ErrCodeParamInvalid = 20003
+	ErrCodeSuccess = 200
+	ErrCodeBadRequest = 400
+	ErrCodeInternalServoce = 500
 )
-
-var msg = map[int]string{
-	ErrCodeSuccess: "Success",
-	ErrCodeParamInvalid: "email is invalid",
-}
