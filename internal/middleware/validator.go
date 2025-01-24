@@ -13,7 +13,7 @@ func InitValidator() {
     
     // Register custom validators
     validate.RegisterValidation("password", validatePassword)
-    validate.RegisterValidation("name", validateName)
+    validate.RegisterValidation("fullname", validateName)
     validate.RegisterValidation("phone", validatePhone)
 }
 

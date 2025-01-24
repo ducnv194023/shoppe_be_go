@@ -14,9 +14,9 @@ func (pr *AuthRouter) InitAuthRouter(router *gin.RouterGroup) {
 	// public
 	AuthRouterPublic := router.Group("/auth")
 	{
-		AuthRouterPublic.GET("/register", authController.Register)
-		AuthRouterPublic.GET("/login", authController.Login)
-		AuthRouterPublic.GET("/logout", authController.Logout)
+		AuthRouterPublic.POST("/register", authController.Register)
+		AuthRouterPublic.POST("/login", authController.Login)
+		AuthRouterPublic.POST("/logout", authController.Logout)
 		AuthRouterPublic.GET("/sendOTP")
 		AuthRouterPublic.GET("/verify")
 

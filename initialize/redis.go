@@ -29,24 +29,5 @@ func InitRedis() {
 
 	global.Logger.Info("Connected to Redis")
 	global.Rdb = rdb
-
-	RedisExample()
 }
 
-func RedisExample() {
-	err := global.Rdb.Set(ctx, "score", 100, 0).Err()
-
-	if err != nil {
-		global.Logger.Error("Failed to set score", zap.Error(err))
-		panic(err)
-	}
-
-	val, err := global.Rdb.Get(ctx, "score").Result()
-
-	if err != nil {
-		global.Logger.Error("Failed to get score", zap.Error(err))
-		panic(err)
-	}
-
-	global.Logger.Info("Score", zap.String("score", val))
-}
