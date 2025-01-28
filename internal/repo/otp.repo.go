@@ -1,8 +1,7 @@
 package repo
 
 import (
-    "math/rand"
-    "time"
+	utils "github.com/ducnv194023/shoppe_be_go/internal/utils/random"
 )
 
 type IOTPRepo interface {
@@ -11,19 +10,8 @@ type IOTPRepo interface {
 
 type OTPRepo struct {}
 
-
 func (ur *OTPRepo) GenerateOTP() string {
-    // Generate 6-digit OTP
-    const length = 6
-    rand.Seed(time.Now().UnixNano())
-    
-    // Create numeric OTP
-    digits := make([]rune, length)
-    for i := range digits {
-        digits[i] = rune('0' + rand.Intn(10))
-    }
-    
-    return string(digits)
+    return utils.Random(6)
 }
 // khởi tạo
 func NewOTPRepo() IOTPRepo {

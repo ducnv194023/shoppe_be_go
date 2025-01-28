@@ -29,6 +29,7 @@
             provideRedis,
             wire.Bind(new(database.DBTX), new(*sql.DB)),
             database.New,
+            repo.NewRedisRepo,
             repo.NewUserRepo,
             repo.NewOTPRepo,
             wire.Bind(new(repo.IUserRepo), new(*repo.UserRepo)),

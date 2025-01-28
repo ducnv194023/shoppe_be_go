@@ -30,4 +30,3 @@ func InitRedis() {
 	global.Logger.Info("Connected to Redis")
 	global.Rdb = rdb
 }
-

@@ -2,26 +2,30 @@ package response
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	
+	"github.com/ducnv194023/shoppe_be_go/pkg/errors"
+
 )
 
-type ResponseData struct {
-	Code int `json:"code"`
-	Message string `json:"message"`
-	Data interface{} `json:"data"`
+type Response struct {
+    Data    interface{} `json:"data,omitempty"`
+    Error   string      `json:"error,omitempty"`
+    Code    int         `json:"code"`
+    Success bool        `json:"success"`
 }
 
-func SuccessResponse(c *gin.Context, code int, message string, data interface{}) {
-	c.JSON(http.StatusOK, ResponseData{
-		Code: code,
-		Message: message,
-		Data: data,
-	})	
+func ResponseSuccess(c *gin.Context, code int, data interface{}) {
+    c.JSON(code, Response{
+        Data:    data,
+        Code:    code,
+        Success: true,
+    })
 }
 
-func ErrorResponse(c *gin.Context, code int, message string) {
-	c.JSON(http.StatusOK, ResponseData{
-		Code: code,
-		Message: message,
-	})
+func ResponseError(c *gin.Context, err *errors.AppError) {
+    c.JSON(err.Code, Response{
+        Error:   err.Message,
+        Code:    err.Code, 
+        Success: false,
+    })
 }

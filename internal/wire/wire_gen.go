@@ -31,7 +31,8 @@ func InitializeAuthHandler() (*controller.AuthController, error) {
 	if err != nil {
 		return nil, err
 	}
-	iAuthService := services.NewAuthService(userRepo, iotpRepo, iMailService, client)
+	iRedisRepo := repo.NewRedisRepo(client)
+	iAuthService := services.NewAuthService(userRepo, iotpRepo, iMailService, iRedisRepo)
 	authController := controller.NewAuthController(iAuthService)
 	return authController, nil
 }

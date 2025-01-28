@@ -1,7 +1,6 @@
 package services
 
 import (
-	"encoding/json"
 	"context"
 	"errors"
 	"time"
@@ -24,14 +23,14 @@ type AuthService struct {
 	userRepo    repo.IUserRepo
 	otpRepo     repo.IOTPRepo
 	mailService IMailService
-	redisClient	*redis.Client
+	redisClient	repo.IRedisRepo
 }
 
 func NewAuthService(
 	userRepo repo.IUserRepo,
 	otpRepo repo.IOTPRepo,
 	mailService IMailService,
-	redisClient	*redis.Client,
+	redisClient	repo.IRedisRepo,
 ) IAuthService {
 	return &AuthService{
 		userRepo:    userRepo,
@@ -67,14 +66,9 @@ func (as *AuthService) Register(
 		"fullname": fullname,
 	}
 
-	jsonBody, err := json.Marshal(redisBody)
-	if err != nil {
-		return nil, err
-	}
+	redisCmd, error := as.redisClient.SetKey(ctx, constants.REGISTER_INFO_KEY, redisBody, time.Minute)
 
-	test := as.redisClient.Set(ctx, constants.REGISTER_INFO_KEY, jsonBody, time.Minute)
-
-	return test, nil
+	return redisCmd, error
 }
 
 
