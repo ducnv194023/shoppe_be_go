@@ -4,6 +4,7 @@ import (
 	validator "github.com/ducnv194023/shoppe_be_go/internal/middleware"
 	"github.com/ducnv194023/shoppe_be_go/internal/services"
 	"github.com/ducnv194023/shoppe_be_go/internal/vo"
+	"github.com/ducnv194023/shoppe_be_go/pkg/errors"
 	response "github.com/ducnv194023/shoppe_be_go/pkg/response"
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +26,7 @@ func (ac *AuthController) Register(c *gin.Context) {
 
     if err := c.ShouldBindJSON(&req); err != nil {
 		errorMsg := validator.TranslateValidationErrors(err)
-        response.RespondWithError(c, response.ErrCodeBadRequest, errorMsg)
+        response.ResponseError(c, errors.NewBadRequestError(errorMsg))
 
 		return
     }
@@ -33,10 +34,10 @@ func (ac *AuthController) Register(c *gin.Context) {
 	_, error := ac.authService.Register(c , req.Email, req.Password, req.FullName )
 
 	if error != nil {
-		response.ErrorResponse(c, response.ErrCodeInternalServoce, "đã có lỗi xảy ra")
+		response.ResponseError(c, errors.NewInternalError(error))
 	}
 
-	response.SuccessResponse(c, 200, "thành công", nil)
+	response.ResponseSuccess(c, 200, nil)
 }
 
 func (ac *AuthController) Login(c *gin.Context) {

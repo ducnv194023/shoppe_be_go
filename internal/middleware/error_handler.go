@@ -1,28 +1,36 @@
 package middleware
 
 import (
-    "fmt"
-    "net/http"
+	"fmt"
+	"net/http"
+    "github.com/gin-gonic/gin"
 
 	"github.com/ducnv194023/shoppe_be_go/pkg/errors"
-	"github.com/ducnv194023/shoppe_be_go/pkg/response"
-
-
 )
 
-// Middleware xử lý panic và lỗi
-func ErrorHandler(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func ErrorHandler() gin.HandlerFunc {
+    return func(c *gin.Context) {
         defer func() {
             if err := recover(); err != nil {
+                // Log error
+                fmt.Printf("panic occurred: %v\n", err)
+
                 appErr := &errors.AppError{
                     Code:    http.StatusInternalServerError,
-                    Message: "Lỗi hệ thống",
-                    Err:     fmt.Errorf("%v", err),
+                    Message: "Internal Server Error",
+                    Err:     fmt.Errorf("%v", err), 
                 }
-                response.RespondWithError(w, appErr)
+
+                c.JSON(appErr.Code, gin.H{
+                    "error":   appErr.Message,
+                    "code":    appErr.Code,
+                    "success": false,
+                })
+
+                c.Abort()
             }
         }()
-        next.ServeHTTP(w, r)
-    })
+
+        c.Next()
+    }
 }

@@ -1,9 +1,10 @@
 package initialize
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/ducnv194023/shoppe_be_go/global"
+	"github.com/ducnv194023/shoppe_be_go/internal/middleware"
 	"github.com/ducnv194023/shoppe_be_go/internal/routers"
+	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
@@ -24,6 +25,7 @@ func InitRouter() *gin.Engine {
 	r.Use() // logging
 	r.Use()  // cross
 	r.Use() // limit global
+	r.Use(middleware.ErrorHandler())
 
 	authRouter := routers.RouterGroupApp.Auth
 
